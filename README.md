@@ -57,42 +57,6 @@ The system is designed to follow backend security best practices and clean archi
 
 ---
 
-## API Endpoints
-
-### Authentication
-
-- Stateless JWT-based authentication
-- Tokens are signed using a configurable secret
-- Custom security filter for request validation
-- Login endpoint rate limiting
-
----
-
-### Encryption
-
-- AES-256-GCM encryption
-- Secrets stored as IV + ciphertext
-- Decryption only performed on dedicated reveal endpoint
-- No plaintext secrets stored in the database
-
----
-
-### Data Isolation
-
-- Secrets are strictly isolated per authenticated user
-- Ownership validated via user identity in JWT
-- No cross-user data access
-
----
-
-### Configuration
-
-- No hardcoded secrets
-- All sensitive values provided via environment variables
-- `.env.example` template provided
-- `.env` excluded from version control
-
----
 
 ## API Endpoints
 
