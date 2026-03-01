@@ -1,0 +1,45 @@
+@base = http://localhost:8080
+@jwt = INSERT_TOKEN_HERE
+
+### Register (falls du noch keinen User hast)
+POST {{base}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "test12345678"
+}
+
+### Login
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "test12345678"
+}
+
+### Secrets ohne Token (soll 401 sein)
+GET {{base}}/api/secrets
+
+### Secrets mit Token (JWT einsetzen) -> soll 200 sein und Liste liefern
+GET {{base}}/api/secrets
+Authorization: Bearer {{jwt}}
+
+### Secret erstellen (POST) -> soll 200/201
+POST {{base}}/api/secrets
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+{
+  "title": "gmail",
+  "data": "meinPasswort123"
+}
+
+### Danach alle Secrets holen (GET) -> soll 200 + NICHT leer
+GET {{base}}/api/secrets
+Authorization: Bearer {{jwt}}
+
+### Secret REVEAL (GET) -> soll 200 + data im Klartext liefern
+GET {{base}}/api/secrets/1/reveal
+Authorization: Bearer {{jwt}}
