@@ -1,16 +1,19 @@
 package com.yassin.securevault.config;
 
+import com.yassin.securevault.entity.SecurityEventType;
+import com.yassin.securevault.entity.SecurityOutcome;
+import com.yassin.securevault.service.SecurityEventService;
+import io.github.bucket4j.Bandwidth;
+import io.github.bucket4j.Bucket;
+import io.github.bucket4j.Refill;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import io.github.bucket4j.Bandwidth;
-import io.github.bucket4j.Bucket;
-import io.github.bucket4j.Refill;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -19,9 +22,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
+@RequiredArgsConstructor
 public class LoginRateLimitFilter extends OncePerRequestFilter {
 
     private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
+    private final SecurityEventService securityEventService;
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
@@ -34,9 +39,18 @@ public class LoginRateLimitFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String key = clientIp(request);
-
         Bucket bucket = buckets.computeIfAbsent(key, k -> newBucket());
         if (!bucket.tryConsume(1)) {
+            securityEventService.emit(
+                    SecurityEventType.AUTH_RATE_LIMIT_TRIGGERED,
+                    SecurityOutcome.FAIL,
+                    null,
+                    request,
+                    "AUTH",
+                    null,
+                    Map.of("path", request.getRequestURI())
+            );
+
             response.setStatus(429);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
@@ -52,7 +66,6 @@ public class LoginRateLimitFilter extends OncePerRequestFilter {
     }
 
     private Bucket newBucket() {
-        // 5 Versuche pro Minute pro IP
         Bandwidth limit = Bandwidth.classic(5, Refill.greedy(5, Duration.ofMinutes(1)));
         return Bucket.builder().addLimit(limit).build();
     }

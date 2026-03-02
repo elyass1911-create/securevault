@@ -1,0 +1,14 @@
+package com.yassin.securevault.entity;
+
+public enum SecurityEventType {
+    AUTH_LOGIN_SUCCESS,
+    AUTH_LOGIN_FAIL,
+    AUTH_RATE_LIMIT_TRIGGERED,
+    AUTH_UNAUTHORIZED,
+    AUTH_FORBIDDEN,
+    SECRET_CREATED,
+    SECRET_UPDATED,
+    SECRET_DELETED,
+    SECRET_REVEALED,
+    SUSPICIOUS_ENUMERATION
+}

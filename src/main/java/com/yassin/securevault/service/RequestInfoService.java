@@ -13,4 +13,15 @@ public class RequestInfoService {
         }
         return request.getRemoteAddr();
     }
+
+    public String userAgent(HttpServletRequest request) {
+        String value = request.getHeader("User-Agent");
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        if (value.length() > 500) {
+            return value.substring(0, 500);
+        }
+        return value;
+    }
 }
