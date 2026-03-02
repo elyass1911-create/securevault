@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "security.jwt.secret",
+      "type": "java.lang.String",
+      "description": "JWT signing secret. Must be at least 32 characters."
+    },
+    {
+      "name": "security.jwt.expiration-minutes",
+      "type": "java.lang.Long",
+      "description": "JWT expiration time in minutes."
+    },
+    {
+      "name": "security.aes.key-base64",
+      "type": "java.lang.String",
+      "description": "Base64-encoded AES-256 key (must decode to 32 bytes)."
+    }
+  ]
+}
