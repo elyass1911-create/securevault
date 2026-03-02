@@ -55,6 +55,16 @@ Secrets:
 
 Note: `GET /api/secrets` returns metadata only. Plaintext is only returned by `GET /api/secrets/{id}/reveal` for the owning user.
 
+## API Documentation
+
+Interactive API documentation is available via Swagger UI:
+
+- `http://localhost:8080/swagger-ui.html`
+
+Raw OpenAPI specification:
+
+- `http://localhost:8080/v3/api-docs`
+
 ## Running Locally
 
 1. Create a local `.env` file from `.env.example`.
