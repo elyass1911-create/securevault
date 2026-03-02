@@ -69,14 +69,21 @@ Raw OpenAPI specification:
 
 ```mermaid
 flowchart LR
-    A[Client] --> B[Spring Boot API]
-    B --> C[Security Layer<br/>JWT Filter + AuthZ]
-    C --> D[Controllers]
-    D --> E[Services]
-    E --> F[EncryptionService<br/>AES-256-GCM]
-    E --> G[(PostgreSQL)]
-    E --> H[AuditService]
-    H --> I[(Audit Logs)]
+    Client[Client / Swagger / Tests] -->|HTTP| Sec[Spring Security Filter Chain]
+    Sec -->|JWT validated| Ctrl[Controllers]
+
+    Ctrl --> Svc[Service Layer]
+    Svc --> Enc[EncryptionService<br/>AES-256-GCM]
+
+    Svc --> Repo[Spring Data JPA Repositories]
+    Repo --> DB[(PostgreSQL / H2 test profile)]
+
+    Svc --> Audit[AuditService]
+    Audit --> DB
+
+    %% reveal path emphasis
+    Ctrl -. "GET /.../reveal" .-> Svc
+    Svc -. decrypt only on reveal .-> Enc
 ```
 
 ## Running Locally
