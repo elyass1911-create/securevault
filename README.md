@@ -156,5 +156,6 @@ This repository demonstrates that I can:
 
 ## Author
 
-Yassin El Founti  
-Backend Developer (Student, B.Sc. IT - 4th Semester)
+Yassin El Founti
+B.Sc. IT Student
+Backend & Application Security Enthusiast
