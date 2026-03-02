@@ -237,10 +237,11 @@ GitHub Actions runs CI on every push to `main` and on every pull request.
 This repository demonstrates that I can:
 
 - design secure backend APIs beyond basic CRUD
-- implement and verify authorization boundaries
-- apply encryption and environment-based secret management
-- write integration tests for real attack scenarios (IDOR/BOLA)
-- package and run services in a reproducible local environment
+- implement and verify authorization boundaries (including IDOR/BOLA prevention)
+- apply encryption-at-rest and environment-based secret management
+- build explainable security analytics (event pipeline, risk scoring, anomaly detection)
+- write integration tests for realistic attack scenarios (cross-user access, brute-force)
+- deliver production-plausible engineering practices (Dockerized setup, Swagger/OpenAPI, CI + secret scanning)
 
 ## Author
 
