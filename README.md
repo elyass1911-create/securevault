@@ -160,3 +160,4 @@ Yassin El Founti
 
 B.Sc. IT Student
 
+Backend & Application Security Enthusiast
