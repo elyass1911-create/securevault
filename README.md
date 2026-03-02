@@ -65,6 +65,20 @@ Raw OpenAPI specification:
 
 - `http://localhost:8080/v3/api-docs`
 
+## Architecture
+
+```mermaid
+flowchart LR
+    A[Client] --> B[Spring Boot API]
+    B --> C[Security Layer<br/>JWT Filter + AuthZ]
+    C --> D[Controllers]
+    D --> E[Services]
+    E --> F[EncryptionService<br/>AES-256-GCM]
+    E --> G[(PostgreSQL)]
+    E --> H[AuditService]
+    H --> I[(Audit Logs)]
+```
+
 ## Running Locally
 
 1. Create a local `.env` file from `.env.example`.
