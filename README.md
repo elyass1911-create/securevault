@@ -157,5 +157,7 @@ This repository demonstrates that I can:
 ## Author
 
 Yassin El Founti
+
 B.Sc. IT Student
+
 Backend & Application Security Enthusiast
