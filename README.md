@@ -1,8 +1,11 @@
-# SecureVault v2 - AI Security Monitoring Edition
+# SecureVault v2 - Encrypted Secret Management API with AI Security Monitoring
 
 SecureVault is a Spring Boot backend that demonstrates practical API security patterns: JWT authentication, per-user authorization, encrypted data storage, audit logging, and security-focused integration testing.
 
 This project was built as a portfolio project to show backend and application security fundamentals in a real, runnable codebase.
+
+Core (v1): secure encrypted secret vault with JWT auth, AES-256-GCM encryption, and strict ownership-based access control.
+Adds (v2): explainable AI security monitoring with structured events, risk scoring, anomaly detection, and admin monitoring endpoints.
 
 ## Security Monitoring Edition (v2)
 
