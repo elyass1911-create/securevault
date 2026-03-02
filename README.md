@@ -116,6 +116,13 @@ Security integration test included:
   - User A can reveal own secret (`200`)
   - User B cannot reveal User A secret (`403` or `404`, currently `404`)
 
+## CI
+
+GitHub Actions runs CI on every push to `main` and on every pull request.
+
+- Build and test pipeline: `./mvnw -B clean test` (Java 21)
+- Security pipeline: Gitleaks secret scanning
+
 ## Why This Project Is Relevant
 
 This repository demonstrates that I can:
