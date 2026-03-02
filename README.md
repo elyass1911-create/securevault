@@ -14,6 +14,8 @@ This version extends the original vault with a local, explainable monitoring pip
 - Admin-only monitoring API (`/api/security/*`)
 - Integration tests that simulate cross-user access attempts and brute-force behavior
 
+Note: "AI" in this project means explainable local security analytics (rules + statistical anomaly detection), not external LLM calls or paid AI services.
+
 ## Key Features
 
 - User registration and login with JWT-based stateless authentication
@@ -71,6 +73,8 @@ Security Monitoring (ADMIN only):
 - `GET /api/security/incidents?page=&size=`
 - `GET /api/security/anomalies?page=&size=`
 - `GET /api/security/risk/top?window=24h&limit=10`
+
+Access requirement: all `/api/security/*` endpoints require `ROLE_ADMIN`.
 
 ## API Documentation
 
