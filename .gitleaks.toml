@@ -24,3 +24,16 @@ regexes = [
   '''^security\.jwt\.secret=0123456789abcdef0123456789abcdef$''',
   '''^security\.aes\.key-base64=MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE=$''',
 ]
+
+[[allowlists]]
+description = "Allow env-variable references in runtime config (no hardcoded secrets)"
+paths = [
+  '''^src/main/resources/application\.properties$''',
+  '''^src/main/resources/application\.yml$''',
+]
+regexes = [
+  '''^spring\.datasource\.password=\$\{DB_PASSWORD\}$''',
+  '''^security\.jwt\.secret=\$\{JWT_SECRET\}$''',
+  '''^security\.aes\.key-base64=\$\{AES_KEY\}$''',
+  '''^    password: \$\{DB_PASSWORD\}$''',
+]
