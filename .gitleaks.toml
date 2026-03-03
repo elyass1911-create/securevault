@@ -1,0 +1,26 @@
+title = "securevault gitleaks config"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Allow documented non-production placeholders"
+paths = [
+  '''^\.env\.example$''',
+  '''^README\.md$''',
+]
+regexes = [
+  '''JWT_SECRET=your-strong-secret''',
+  '''DB_PASSWORD=change-me''',
+  '''AES_KEY=base64-32-byte-key''',
+]
+
+[[allowlists]]
+description = "Allow deterministic test-only crypto values"
+paths = [
+  '''^src/test/resources/application-test\.properties$''',
+]
+regexes = [
+  '''^security\.jwt\.secret=0123456789abcdef0123456789abcdef$''',
+  '''^security\.aes\.key-base64=MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE=$''',
+]
