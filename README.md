@@ -82,6 +82,38 @@ Security Monitoring (ADMIN only):
 
 Access requirement: all `/api/security/*` endpoints require `ROLE_ADMIN`.
 
+## Quick Demo (Copy/Paste)
+
+Start app and database, then run this minimal flow:
+
+```bash
+# 1) Register
+curl -X POST http://localhost:8080/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"email":"demo.user@test.com","password":"Password123!"}'
+
+# 2) Login (copy token from response JSON)
+curl -X POST http://localhost:8080/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"demo.user@test.com","password":"Password123!"}'
+
+# 3) Create secret (replace <TOKEN>)
+curl -X POST http://localhost:8080/api/secrets \
+  -H "Authorization: Bearer <TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{"title":"demo","data":"my first secret"}'
+
+# 4) List metadata only
+curl -X GET http://localhost:8080/api/secrets \
+  -H "Authorization: Bearer <TOKEN>"
+
+# 5) Reveal plaintext (replace <ID>)
+curl -X GET http://localhost:8080/api/secrets/<ID>/reveal \
+  -H "Authorization: Bearer <TOKEN>"
+```
+
+Tip: `requests.http` in this repo contains the same flow for IDE HTTP clients.
+
 ## API Documentation
 
 Interactive API documentation can be enabled explicitly for local/dev usage:
@@ -215,6 +247,22 @@ Notes:
 
 - `TRUST_FORWARD_HEADERS=true` only when running behind a trusted reverse proxy that sanitizes `X-Forwarded-For` / `X-Real-IP`.
 - `PUBLIC_DOCS_ENABLED=true` enables Swagger/OpenAPI endpoints (recommended only for local/dev).
+
+## Security Design Notes
+
+- Password storage: user passwords are hashed with BCrypt (`BCryptPasswordEncoder`).
+- JWT claims: `sub` = user email, custom `role` claim.
+- JWT expiry: configurable with `security.jwt.expiration-minutes` (default `60`).
+- Refresh tokens: currently not implemented (access-token only).
+- Key rotation: JWT/AES key rotation is not automated yet (planned future work).
+
+## Mini Threat Model
+
+- Database leak: mitigated by AES-256-GCM encryption-at-rest for secret payloads.
+- IDOR/BOLA: mitigated by owner-scoped repository access and cross-user checks.
+- Brute-force login attempts: mitigated by login rate limiting and security event monitoring.
+- Stolen token/replay window: reduced by JWT expiration; no refresh-token flow yet.
+- Insider/misuse visibility: improved by audit and security-event trails.
 
 ## Testing
 
