@@ -39,6 +39,7 @@ Note: "AI" in this project means explainable local security analytics (rules + s
 - IDOR/BOLA protection: cross-user reveal attempts are blocked (expected `404` in current implementation)
 - Secret management: no plaintext secret values are persisted in the database
 - Configuration hygiene: sensitive values loaded from environment variables, not hardcoded
+- Proxy/IP hygiene: forwarded headers are only trusted when explicitly enabled
 - Repository hygiene: `.env` is ignored, `.env.example` provided as template
 - CI protection: GitHub Actions secret scanning via Gitleaks
 
@@ -83,13 +84,15 @@ Access requirement: all `/api/security/*` endpoints require `ROLE_ADMIN`.
 
 ## API Documentation
 
-Interactive API documentation is available via Swagger UI:
+Interactive API documentation can be enabled explicitly for local/dev usage:
 
 - `http://localhost:8080/swagger-ui.html`
 
 Raw OpenAPI specification:
 
 - `http://localhost:8080/v3/api-docs`
+
+By default (`PUBLIC_DOCS_ENABLED=false`), Swagger/OpenAPI endpoints are disabled and not publicly exposed.
 
 ## Architecture
 
@@ -204,7 +207,14 @@ Example values (see `.env.example`):
 JWT_SECRET=your-strong-secret
 AES_KEY=base64-32-byte-key
 DB_PASSWORD=change-me
+TRUST_FORWARD_HEADERS=false
+PUBLIC_DOCS_ENABLED=false
 ```
+
+Notes:
+
+- `TRUST_FORWARD_HEADERS=true` only when running behind a trusted reverse proxy that sanitizes `X-Forwarded-For` / `X-Real-IP`.
+- `PUBLIC_DOCS_ENABLED=true` enables Swagger/OpenAPI endpoints (recommended only for local/dev).
 
 ## Testing
 

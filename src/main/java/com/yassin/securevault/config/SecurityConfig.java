@@ -1,5 +1,6 @@
 package com.yassin.securevault.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -21,7 +22,8 @@ public class SecurityConfig {
             JwtAuthFilter jwtAuthFilter,
             LoginRateLimitFilter loginRateLimitFilter,
             RestAuthenticationEntryPoint restAuthenticationEntryPoint,
-            RestAccessDeniedHandler restAccessDeniedHandler
+            RestAccessDeniedHandler restAccessDeniedHandler,
+            @Value("${app.security.public-docs-enabled:false}") boolean publicDocsEnabled
     ) throws Exception {
 
         return http
@@ -39,23 +41,25 @@ public class SecurityConfig {
 
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                .authorizeHttpRequests(auth -> auth
-                        // Public endpoints
-                        .requestMatchers(
-                                "/health",
-                                "/auth/register",
-                                "/auth/login",
-                                "/error",
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(
+                            "/health",
+                            "/auth/register",
+                            "/auth/login",
+                            "/error"
+                    ).permitAll();
 
-                                // Swagger / OpenAPI
+                    // Public docs are opt-in and disabled by default.
+                    if (publicDocsEnabled) {
+                        auth.requestMatchers(
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
-                        ).permitAll()
+                        ).permitAll();
+                    }
 
-                        // Everything else requires JWT
-                        .anyRequest().authenticated()
-                )
+                    auth.anyRequest().authenticated();
+                })
 
                 .addFilterBefore(loginRateLimitFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
