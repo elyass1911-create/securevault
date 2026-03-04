@@ -21,8 +21,8 @@ paths = [
   '''^src/test/resources/application-test\.properties$''',
 ]
 regexes = [
-  '''^security\.jwt\.secret=0123456789abcdef0123456789abcdef$''',
-  '''^security\.aes\.key-base64=MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDE=$''',
+  '''^security\.jwt\.secret=TEST_JWT_SECRET_FOR_TESTS_ONLY_1234$''',
+  '''^security\.aes\.key-base64=VEVTVF9BRVNfS0VZX0ZPUl9URVNUU19PTkxZXzEyMzQ=$''',
 ]
 
 [[allowlists]]
